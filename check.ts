@@ -9,30 +9,16 @@ const filePath = path.join(__dirname, "index.html");
 const html = fs.readFileSync(filePath, "utf8");
 
 const dom = new JSDOM(html);
+
 const popovers = dom.window.document.querySelectorAll("span.popover");
 for (const popover of popovers) {
   popover.remove();
 }
 
-const selector = "code.rust";
-const rusts = dom.window.document.querySelectorAll(selector);
+const rusts = dom.window.document.querySelectorAll("code.rust");
 
 for (const rust of rusts) {
-  // const spans = rust.querySelectorAll("span");
-  // for (const span of spans) {
-  //   console.log(`---> ${span.classList.toString()}`);
-  //   if (!span.classList.contains("popover")) {
-  //     console.log(span.textContent);
-  //     console.log("~~~~");
-  //   }
-  // }
   const code = rust.textContent;
   console.log(code);
   console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 }
-
-// await foo();
-
-// async function foo() {
-//   console.log("hi");
-// }
