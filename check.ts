@@ -7,6 +7,8 @@ import { run } from './run'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
+run(`cp ../holochain-lesson-5/index.html ./`)
+
 const filePath = path.join(__dirname, 'index.html')
 const html = fs.readFileSync(filePath, 'utf8')
 
@@ -25,11 +27,13 @@ const LIB_PATH = `${SRC_DIR}/lib.rs`
 
 run(`rm -rf ${LIB_PATH}`)
 run(`touch ${LIB_PATH}`)
+// run(`echo 'use hdk::prelude::*;' | tee ${LIB_PATH}`)
 run(`rm -rf ${SRC_DIR}/slide_*`)
 
 let i = 1
 for (const rust of rusts) {
-	const code = rust.textContent || ''
+	let code = rust.textContent || ''
+	code = `use hdk::prelude::*;\n\n${code}`
 	const filename = `${SRC_DIR}/slide_${i}.rs`
 	fs.writeFileSync(filename, code)
 
