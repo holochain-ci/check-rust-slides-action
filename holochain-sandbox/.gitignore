@@ -1,0 +1,12 @@
+/target/
+/dna/src/*
+/.cargo/
+*.happ
+*.webhapp
+*.zip
+*.dna
+.hc*
+.hc
+.running
+
+!/dna/src/.keep
