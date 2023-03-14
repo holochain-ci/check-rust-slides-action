@@ -1,0 +1,13 @@
+[profile.dev]
+opt-level = "z"
+
+[profile.release]
+opt-level = "z"
+
+[workspace]
+members = ["dna"]
+
+[workspace.dependencies]
+hdi = "=0.2.1"
+hdk = "=0.1.1"
+serde = "1"
