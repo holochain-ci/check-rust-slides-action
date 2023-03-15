@@ -25,23 +25,37 @@ const HAPP_DIR = `${__dirname}/holochain-sandbox`
 const SRC_DIR = `${HAPP_DIR}/dna/src`
 const LIB_PATH = `${SRC_DIR}/lib.rs`
 
+run(`rm -rf ${SRC_DIR}/*`)
 run(`rm -rf ${LIB_PATH}`)
 run(`touch ${LIB_PATH}`)
 // run(`echo 'use hdk::prelude::*;' | tee ${LIB_PATH}`)
-run(`rm -rf ${SRC_DIR}/slide_*`)
 
 let i = 1
 for (const rust of rusts) {
 	let code = rust.textContent || ''
 	code = `use hdk::prelude::*;\n\n${code}`
-	const filename = `${SRC_DIR}/slide_${i}.rs`
+	code = mark_unimplemented(code)
+
+	const filename = `${SRC_DIR}/rust_${i}.rs`
 	fs.writeFileSync(filename, code)
 
 	let lib = fs.readFileSync(LIB_PATH, 'utf8')
-	lib = `${lib}\nmod slide_${i};`
+	lib = `${lib}\nmod rust_${i};`
 	fs.writeFileSync(LIB_PATH, lib)
 
 	i++
+}
+
+function mark_unimplemented(code: string) {
+	const warnings = [
+		'/* Create, create links, get, query... */',
+		'// Defined in the "Capability Tokens (VII) slide"',
+		'// ... execute the rest of the code',
+	]
+	for (const warning of warnings) {
+		code = code.replace(warning, `${warning}\n  unimplemented!();`)
+	}
+	return code
 }
 
 run(`cd ${HAPP_DIR} && nix develop --command bash -c "cargo build --color always"`)
